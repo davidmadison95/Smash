@@ -1,16 +1,24 @@
 $(document).ready(function() {
-    // Basic accordion functionality
-    $("#accordion h2").click(function() {
-        // Toggle the active class on the clicked header
-        $(this).toggleClass("active");
+    // Initialize the accordion
+    $("#accordion h2").click(function(event) {
+        // Prevent default behavior that might be causing issues
+        event.preventDefault();
+        event.stopPropagation();
         
-        // Toggle the visibility of the content panel
-        $(this).next(".content").slideToggle(300);
+        // If this heading is already active, just close its content
+        if ($(this).hasClass("active")) {
+            $(this).removeClass("active");
+            $(this).next(".content").slideUp(300);
+            return;
+        }
         
-        // Improved functionality (from "The Accordion, Take 2" in Chapter 4)
-        // Close other panels when opening a new one
-        $(this).siblings("h2").removeClass("active");
-        $(this).siblings(".content").slideUp(300);
+        // Close all panels
+        $("#accordion h2").removeClass("active");
+        $("#accordion .content").slideUp(300);
+        
+        // Open the clicked panel
+        $(this).addClass("active");
+        $(this).next(".content").slideDown(300);
     });
     
     // Show the first panel by default
