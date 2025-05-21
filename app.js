@@ -1,33 +1,42 @@
 $(document).ready(function() {
-    // Initialize the accordion
-    $("#accordion h2").click(function(event) {
-        // Prevent default behavior that might be causing issues
-        event.preventDefault();
-        event.stopPropagation();
-        
-        // If this heading is already active, just close its content
+    // Set up the accordion
+    setupAccordion();
+    
+    // Additional features
+    addExtraFeatures();
+    
+    // First panel starts open
+    openFirstPanel();
+});
+
+function setupAccordion() {
+    // Attach click event to headings
+    $("#accordion h2").on("click", function() {
+        // Toggle this panel
         if ($(this).hasClass("active")) {
+            // If it's already active, close it
             $(this).removeClass("active");
             $(this).next(".content").slideUp(300);
-            return;
+        } else {
+            // Close all panels
+            $("#accordion h2").removeClass("active");
+            $("#accordion .content").slideUp(300);
+            
+            // Open this panel
+            $(this).addClass("active");
+            $(this).next(".content").slideDown(300);
         }
-        
-        // Close all panels
-        $("#accordion h2").removeClass("active");
-        $("#accordion .content").slideUp(300);
-        
-        // Open the clicked panel
-        $(this).addClass("active");
-        $(this).next(".content").slideDown(300);
     });
-    
-    // Show the first panel by default
+}
+
+function openFirstPanel() {
+    // Open the first panel by default
     $("#accordion h2:first").addClass("active");
     $("#accordion .content:first").show();
-    
-    // Additional jQuery features to demonstrate mastery
-    
-    // Add hover effect to headers
+}
+
+function addExtraFeatures() {
+    // Add hover effect to headings
     $("#accordion h2").hover(
         function() {
             $(this).css("box-shadow", "0 0 5px rgba(0, 0, 0, 0.3)");
@@ -37,32 +46,34 @@ $(document).ready(function() {
         }
     );
     
-    // Add a smooth scroll effect when clicking on the main title
+    // Add smooth scroll when clicking title
     $("h1").click(function() {
         $("html, body").animate({
             scrollTop: $("#accordion").offset().top - 20
         }, 800);
     });
     
-    // Add a fade effect to the entire page on load
+    // Page load animation
     $(".container").hide().fadeIn(1000);
     
-    // Add a double-click event to paragraphs to highlight them
+    // Double-click highlight for paragraphs
     $("#accordion p").dblclick(function() {
-        $(this).css({
+        var $this = $(this);
+        
+        $this.css({
             "background-color": "#fff3cd",
             "padding": "10px",
             "border-radius": "5px",
             "transition": "background-color 0.5s"
         });
         
-        // Reset the styling after 3 seconds
+        // Reset after 3 seconds
         setTimeout(function() {
-            $("#accordion p").css({
+            $this.css({
                 "background-color": "transparent",
                 "padding": "0",
                 "transition": "background-color 0.5s"
             });
         }, 3000);
     });
-});
+}
